@@ -1,0 +1,30 @@
+//归并排序最坏情形是O(nlogn)，使用的比较次数几乎是最优的，是递归算法的一个很好实例。他的缺点是需要额外一倍的存储空间（额外的C）。
+//他的基本思想是合并两个已经排序的表（如A和B）。合并的办法是用两个指针，在已经排序的A和B的开头，不断往前移，作比较，把A和B中的元素放到C中
+//可以看到，合并的时间显然是线形的，最多只需要进行n-1次比较
+//对于归并排序，其速度仅次于快速排序，一般用于对总体无序，但是对各子项相对有序的情况
+//真正实现算法时候，要用递归进行处理。其基本操作是合并，然后要不断递归，对越来越小的数组区域进行不断的合并
+void Merge(int sourceArr[],int tempArr[], int startIndex, int midIndex, int endIndex){
+    int i = startIndex, j=midIndex+1, k = startIndex;
+    while(i!=midIndex+1 && j!=endIndex+1){
+        if(sourceArr[i] > sourceArr[j])
+            tempArr[k++] = sourceArr[j++];
+        else
+            tempArr[k++] = sourceArr[i++];
+    }
+    while(i != midIndex+1)
+        tempArr[k++] = sourceArr[i++];
+    while(j != endIndex+1)
+        tempArr[k++] = sourceArr[j++];
+    for(i=startIndex; i<=endIndex; i++)
+        sourceArr[i] = tempArr[i];
+}
+ 
+void MergeSort(int sourceArr[], int tempArr[], int startIndex, int endIndex){
+    int midIndex;
+    if(startIndex < endIndex){
+        midIndex = (startIndex + endIndex) / 2;
+        MergeSort(sourceArr, tempArr, startIndex, midIndex);
+        MergeSort(sourceArr, tempArr, midIndex+1, endIndex);
+        Merge(sourceArr, tempArr, startIndex, midIndex, endIndex);
+    }
+}
