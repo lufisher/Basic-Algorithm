@@ -1,1 +1,31 @@
+//快速排序是实践中已知最快的排序算法，平均时间复杂度是O(nlogn)，最坏情况是O(n^2)//
+//一般来说，快速排序分为四步：
+//1、如果数组S中的元素个数是0或1，返回
+//2、取S中任一元素v，称为枢纽元pivot
+//3、将S分为两个部分，S1为小于等于v的元素，S2为大于等于v的元素。这步是通过首尾两个指针的不断交换来完成的
+//4、返回QuickSort(S1),然后紧跟v，然后是QuickSort(S2)
+//因此，对于不同情形，如何决定枢纽元v就成了设计的关键。设计的方法有：
+//1、首元素法；2、随机法；3、三数中值分割法（一般取最左、最右和中间的值）
+//这里的解法是用首元素法。
+void Qsort(int a[], int low, int high){
+	if (low >= high){
+		return;
+	}
+	int first = low;
+	int last = high;
+	int key = a[first];/*用字表的第一个记录作为枢轴*/
+	while (first < last){
+		while (first < last && a[last] >= key){
+			--last;
+		}
+		a[first] = a[last];//后面会把枢纽补回来
+		while (first < last && a[first] <= key){
+			++first;
+		}
+		a[last] = a[first];
+	}
+	a[first] = key;/*枢轴记录到位*/
+	Qsort(a, low, first - 1);
+	Qsort(a, first + 1, high);
+}
 
