@@ -3,6 +3,7 @@
 //可以看到，合并的时间显然是线形的，最多只需要进行n-1次比较
 //对于归并排序，其速度仅次于快速排序，一般用于对总体无序，但是对各子项相对有序的情况
 //真正实现算法时候，要用递归进行处理。其基本操作是合并，然后要不断递归，对越来越小的数组区域进行不断的合并
+//整个算法要分成两部分，一部分是归并操作，另一部分是总体的归并排序的操作
 void Merge(int sourceArr[],int tempArr[], int startIndex, int midIndex, int endIndex){
     int i = startIndex, j=midIndex+1, k = startIndex;
     while(i!=midIndex+1 && j!=endIndex+1){
@@ -15,7 +16,8 @@ void Merge(int sourceArr[],int tempArr[], int startIndex, int midIndex, int endI
         tempArr[k++] = sourceArr[i++];
     while(j != endIndex+1)
         tempArr[k++] = sourceArr[j++];
-    for(i=startIndex; i<=endIndex; i++)
+    //以上这三个while循环是为了把两个分数组归并到一个新数组里面
+    for(i=startIndex; i<=endIndex; i++)//把新数组放回到原来的数组里面
         sourceArr[i] = tempArr[i];
 }
  
