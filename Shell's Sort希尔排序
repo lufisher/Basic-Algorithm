@@ -1,0 +1,73 @@
+希尔排序(Shell's Sort)是插入排序的一种又称“缩小增量排序”（Diminshing Increment Sort），是直接插入
+排序算法的一种更高效的改进版本。希尔排序是非稳定排序算法。该方法因D.L.Shell于1959年提出而得名。
+希尔排序是把记录按下标的一定增量分组，对每组使用直接插入排序算法排序；随着增量逐渐减少，每组包含的
+关键词越来越多，当增量减至1时，整个文件恰被分成一组，算法便终止。
+希尔排序是基于插入排序的以下两点性质而提出改进方法的：
+1、插入排序在对几乎已经排好序的数据操作时，效率高，即可以达到线性排序的效率。
+2、但插入排序一般来说是低效的，因为插入排序每次只能将数据移动一位。
+
+先取一个小于n的整数d1作为第一个增量，把文件的全部记录分组。所有距离为d1的倍数的记录放在同一个组中。先在
+各组内进行直接插入排序；然后，取第二个增量d2<d1重复上述的分组和排序，直至所取的增量  =1(  <  …<d2<d1)，即所有记录放在同一组中进行直接插入排序为止
+一般的初次取序列的一半为增量，以后每次减半，直到增量为1。
+事实上希尔排序就是设了增量的多次分组插入排序
+//百度百科上C++代码
+void swapInt(int * a,int*b)
+{
+ int c=*a;
+ *a=*b;
+ *b=c;
+}
+void shell(int*data,unsigned int len)
+{
+ if(len<=1||data==NULL)
+  return;
+ for(int div=len/2;div>=1;div=div/2)//定增量div，并不断减小
+ {
+  for(int i=0;i<=div;++i)//分组成div组
+  {
+   for(int j=i;j<len-div;j+=div)//对每组进行插入排序（但是这里代码写的是对每组进行冒泡排序。反正差不多的思想，就是在分数组进行插入排序）
+    for(int k=j;k<len;k+=div)
+     if(data[j]>data[k])
+      swapInt(data+j,data+k);//交换两个数的值
+  }
+ }
+}
+//百度百科上Java代码
+public static void main(String [] args)
+{
+    int[]a={49,38,65,97,76,13,27,49,78,34,12,64,1};
+        System.out.println("排序之前：");
+        for(int i=0;i<a.length;i++)
+        {
+            System.out.print(a[i]+" ");
+        }
+        //希尔排序
+        int d=a.length;
+            while(true)
+            {
+                d=d/2;
+                for(int x=0;x<d;x++)
+                {
+                    for(int i=x+d;i<a.length;i=i+d)
+                    {
+                        int temp=a[i];
+                        int j;
+                        for(j=i-d;j>=0&&a[j]>temp;j=j-d)
+                        {
+                            a[j+d]=a[j];
+                        }
+                        a[j+d]=temp;
+                    }
+                }
+                if(d==1)
+                {
+                    break;
+                }
+            }
+            System.out.println();
+            System.out.println("排序之后：");
+                for(int i=0;i<a.length;i++)
+                {
+                    System.out.print(a[i]+" ");
+                }
+    }
